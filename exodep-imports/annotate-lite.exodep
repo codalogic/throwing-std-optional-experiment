@@ -1,0 +1,9 @@
+# See https://github.com/codalogic/exodep for details on use and format of
+# exodep files
+
+$owner codalogic
+$project annotate-lite
+
+autovars
+
+get include/annotate-lite.h ${annotate_lite_h_dst}

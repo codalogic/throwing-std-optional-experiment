@@ -122,43 +122,43 @@ void using_struct_errors()
 void using_bail_template_class()
 {
     // This captures the problems we might encounter
-    enum Bailouts { Res1, Res2 };
+    enum Bailouts { Error1, Error2 };
 
     // This shows how we attempt to do it
     try
     {
-        MyOptional<int> mi = maybe_int();
-        std::cout << mi.value_or< Bail<Res1> >() << "\n";
-        Bad( "using_bail_template_class() : Should have thrown" );
+		int i1 = maybe_int().value_or< Bail<Error1> >();
+		Bad( "using_bail_template_class() : Should have thrown" );
+		int i2 = maybe_int().value_or< Bail<Error2> >();
     }
 
     // This shows how we pick up the pieces if it goes wrong
-    catch( const Bail<Res1> & )
+    catch( const Bail<Error1> & )
     {
-        Good( "using_bail_template_class() : Res1 thrown" );
+        Good( "using_bail_template_class() : Error1 thrown" );
     }
-    catch( const Bail<Res2> & )
+    catch( const Bail<Error2> & )
     {
-        Bad( "using_bail_template_class() : Res2 thrown. Should have thrown Res1 instead" );
+        Bad( "using_bail_template_class() : Error2 thrown. Should have thrown Error1 instead" );
     }
 }
 
 void using_bail_template_class_again()  // To test there's no conflicts when compiling
 {
-    enum Bailouts { Res1, Res2 };
+    enum Bailouts { Error1, Error2 };
     try
     {
         MyOptional<int> mi = maybe_int();
-        std::cout << mi.value_or< Bail<Res2> >() << "\n";
+        std::cout << mi.value_or< Bail<Error2> >() << "\n";
         Bad( "using_bail_template_class_again() : Should have thrown" );
     }
-    catch( const Bail<Res1> & )
+    catch( const Bail<Error1> & )
     {
-        Bad( "using_bail_template_class_again() : Res1 thrown. Should have thrown Res2 instead" );
+        Bad( "using_bail_template_class_again() : Error1 thrown. Should have thrown Error2 instead" );
     }
-    catch( const Bail<Res2> & )
+    catch( const Bail<Error2> & )
     {
-        Good( "using_bail_template_class_again() : Res2 thrown" );
+        Good( "using_bail_template_class_again() : Error2 thrown" );
     }
 }
 

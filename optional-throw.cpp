@@ -127,9 +127,9 @@ void using_bail_template_class()
     // This shows how we attempt to do it
     try
     {
-		int i1 = maybe_int().value_or< Bail<Error1> >();
-		Bad( "using_bail_template_class() : Should have thrown" );
-		int i2 = maybe_int().value_or< Bail<Error2> >();
+        int i1 = maybe_int().value_or< Bail<Error1> >();
+        Bad( "using_bail_template_class() : Should have thrown" );
+        int i2 = maybe_int().value_or< Bail<Error2> >();
     }
 
     // This shows how we pick up the pieces if it goes wrong

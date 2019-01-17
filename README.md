@@ -31,7 +31,7 @@ try
 }
 catch( const Badint & )
 {
-	// Handle maybe_int() not returning an int
+    // Handle maybe_int() not returning an int
 }
 ```
 
@@ -58,10 +58,10 @@ try
 // This shows how we pick up the pieces if it goes wrong
 catch( const Bail<Error1> & )
 {
-	//...
+    //...
 }
 catch( const Bail<Error2> & )
 {
-	//...
+    //...
 }
 ```

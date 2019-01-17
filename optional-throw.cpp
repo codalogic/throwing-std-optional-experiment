@@ -11,6 +11,7 @@ using namespace annotate_lite;
 #include <string>
 #include <iostream>
 
+// A simplified version of std::optional
 template< class T >
 class MyOptional
 {
@@ -21,18 +22,51 @@ public:
     MyOptional() : has_v( false ) {}
     MyOptional( const T & v_in ) : v(v_in), has_v( true ) {}
     bool has_value() const { return has_v; }
-    T value_or( const T & other ) const
+
+    // 'Standard' value_or( U&& ) implementations based on https://en.cppreference.com/w/cpp/utility/optional/value_or
+    template< class U >
+    constexpr T value_or( U&& default_value ) const&
     {
         if( has_v )
             return v;
-        return other;
+        return static_cast<T>(std::forward<U>(default_value));
     }
     template< class U >
-    T value_or()
+    constexpr T value_or( U&& default_value ) &&
+    {
+        if( has_v )
+            return std::move(v);
+        return static_cast<T>(std::forward<U>(default_value));
+    }
+
+    // New variants of value_or() throwing user specified exceptions
+    template< class U >
+    constexpr T& value_or() &
     {
         if( ! has_v )
             throw U();
         return v;
+    }
+    template< class U >
+    constexpr const T & value_or() const &
+    {
+        if( ! has_v )
+            throw U();
+        return v;
+    }
+    template< class U >
+    constexpr T&& value_or() &&
+    {
+        if( ! has_v )
+            throw U();
+        return std::move(v);
+    }
+    template< class U >
+    constexpr const T&& value_or() const &&
+    {
+        if( ! has_v )
+            throw U();
+        return std::move(v);
     }
 };
 
@@ -112,5 +146,5 @@ int main( int argc, char * argv[] )
 
     Report();
     
-	return 0;
+    return 0;
 }
